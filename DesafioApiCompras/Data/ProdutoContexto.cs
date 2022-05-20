@@ -12,11 +12,7 @@ namespace DesafioApiCompras.Data
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Cartao> Cartoes { get; set; }
         public DbSet<Compra> Compras { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer
-                ("Password=#jamsoftsistemas1310;Persist Security Info=True;User ID=sa;Initial Catalog=ApiCompras;Data Source=localhost\\sistemas");
-        }
+        
+        public ProdutoContexto(DbContextOptions<ProdutoContexto> options) : base(options){ }
     }
 }

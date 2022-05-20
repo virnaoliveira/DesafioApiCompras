@@ -11,7 +11,7 @@ namespace DesafioApiCompras.Model
         public string nome { get; set; }
         public decimal valor_unitario { get; set; }
         public int qtde_estoque { get; set; }
-        public DateTime data_ultimavenda { get; set; }
-        public decimal valor_ultimavenda { get; set; }
+        public DateTime? data_ultimavenda { get; set; }
+        public decimal? valor_ultimavenda { get; set; }
     }
 }

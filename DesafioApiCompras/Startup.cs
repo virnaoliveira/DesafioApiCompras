@@ -1,13 +1,12 @@
+using DesafioApiCompras.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DesafioApiCompras
 {
@@ -20,10 +19,27 @@ namespace DesafioApiCompras
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+
+            services.AddControllers();
+
+            services.AddDbContext<ProdutoContexto>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
+
+            //documentação
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1",
+                    new Microsoft.OpenApi.Models.OpenApiInfo {
+                        Title = "Desafio API de compras",
+                        Version = "v1",
+                        Description = "API REST para compra de produtos utilizando a forma de pagamento cartão de crédito.",
+                        Contact = new Microsoft.OpenApi.Models.OpenApiContact {
+                            Name = "Virna Oliveira",
+                            Url = new Uri("https://www.linkedin.com/in/virna-oliveira-78400b205/")
+                        }
+                    }) ;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,10 +61,22 @@ namespace DesafioApiCompras
 
             app.UseRouting();
 
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json",
+                    "Desafio API de compras - v1");
+            });
+
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }
