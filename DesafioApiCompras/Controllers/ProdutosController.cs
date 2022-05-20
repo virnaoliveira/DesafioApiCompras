@@ -1,4 +1,5 @@
 ﻿using DesafioApiCompras.Data;
+using DesafioApiCompras.Model;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -41,6 +42,28 @@ namespace DesafioApiCompras.Controllers
             {
                 return StatusCode(400, "Ocorreu um erro desconhecido");
             }        
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] Produto produto)
+        {
+            try
+            {
+                try
+                {
+                    _context.Add(produto);
+                    _context.SaveChanges();
+                    return StatusCode(200, "Produto Cadastrado");
+                }
+                catch (Exception)
+                {
+                    return StatusCode(412, "Os valores informados não são válidos");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, "Ocorreu um erro desconhecido");
+            }
         }
 
         [HttpDelete("{id}")]
