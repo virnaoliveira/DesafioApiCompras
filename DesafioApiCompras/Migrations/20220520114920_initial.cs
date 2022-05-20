@@ -33,8 +33,8 @@ namespace DesafioApiCompras.Migrations
                     nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     valor_unitario = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     qtde_estoque = table.Column<int>(type: "int", nullable: false),
-                    data_ultimavenda = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    valor_ultimavenda = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    data_ultimavenda = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    valor_ultimavenda = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
                 },
                 constraints: table =>
                 {
